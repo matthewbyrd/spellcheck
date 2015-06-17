@@ -5,6 +5,8 @@
  * Problem Set 5
  *
  * Implements a dictionary's functionality.
+ *
+ * Relies on dictionary being a list of newline-demarcated unique words.
  */
 
 #include <stdbool.h>
@@ -21,6 +23,11 @@ typedef struct node {
 	struct node* next;
 }
 node;
+
+/**
+ * Array for the hashtable.
+ */
+node* table[HASHSIZE];
 
 /**
  * Create new node with word and a null next pointer. 
@@ -114,8 +121,31 @@ bool check(const char* word)
  */
 bool load(const char* dictionary)
 {
-    // TODO
-    return false;
+    // open the dictionary file
+	FILE* dictionary = fopen(dictionary, "r");
+	
+	if (dictionary == NULL)
+	{
+		return false;
+	}
+	
+	char word[LENGTH + 1];
+	node temp;
+	int hashval;
+	
+	// read the file word by word
+	while (fscanf(dictionary, "%s", word) == 1)
+	{
+		// create a node for new word
+		temp = *create(word);
+		
+		// get the hash value
+		hashval = hash(word);
+		
+		// add that word into the appropriate place in the hashtable
+		table[hashval] = insert(&temp, table[hashval]);
+	}
+	return true;
 }
 
 /**
