@@ -86,6 +86,20 @@ node* insert(node* inserting, node* head)
 }
 
 /**
+ * Form hashval for string s.
+ */
+unsigned int hash(char* s)
+{
+	unsigned hashval;
+	
+	for (hashval = 0; *s != '\0'; s++)
+	{
+		hashval = *s + 31 * hashval;
+	}
+	return hashval % HASHSIZE;
+}
+
+/**
  * Returns true if word is in dictionary else false.
  */
 bool check(const char* word)

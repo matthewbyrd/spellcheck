@@ -15,6 +15,9 @@
 // maximum length for a words
 #define LENGTH 45
 
+// size of hash-table array
+#define HASHSIZE 101
+
 /**
  * Create a new node with word and a null next pointer. Returns the node if successful, else NULL.
  */
