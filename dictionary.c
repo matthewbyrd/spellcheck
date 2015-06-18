@@ -23,6 +23,11 @@
 node* table[HASHSIZE];
 
 /**
+ * Number of words in the dictionary.
+ */
+unsigned int dictwords;
+
+/**
  * Create new node with word and a null next pointer. 
  * Returns pointer to the new node if successful, else NULL.
  */
@@ -155,6 +160,8 @@ bool load(const char* dictionary)
 	// read the file word by word
 	while (fscanf(dict_file, "%s", word) == 1)
 	{	
+		// update word count
+		dictwords++;
 		// create a node for new word
 		temp = create(word);
 		
@@ -172,8 +179,7 @@ bool load(const char* dictionary)
  */
 unsigned int size(void)
 {
-    // TODO
-    return 0;
+    return dictwords;
 }
 
 /**
