@@ -87,7 +87,7 @@ unsigned int hash(char* s)
 		hashval = *s + 31 * hashval;
 	}
 	return hashval % HASHSIZE;
-}
+} 
 
 /**
  * Copies a string s to t in lower case.
@@ -115,19 +115,12 @@ bool check(const char* word)
 	// check the relevant linked list.
     node* ptr = table[hash(checking)];
 		
-	while (ptr != NULL)
+	while (ptr != NULL && ptr->word[0] <= checking[0])
 	{
-		if (ptr->word[0] == checking[0])
-		{
-			if (strcmp(ptr->word, checking) == 0)
+		if (strcmp(ptr->word, checking) == 0)
 			{
 				return true;
 			}
-		}
-		else if (ptr->word[0] > checking[0])
-		{
-			return false;
-		}
 		ptr = ptr->next;
 	}
 	return false;

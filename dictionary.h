@@ -16,7 +16,7 @@
 #define LENGTH 45
 
 // size of hash-table array
-#define HASHSIZE 1001
+#define HASHSIZE 160000
 
 /**
  * Nodes for each word in the dictionary.
@@ -60,7 +60,7 @@ bool load(const char* dictionary);
 unsigned int size(void);
 
 /**
- * Unloads dictionary from memory.  Returns true if successful else false.
+ * Unloads dictionary from memory.  Returns true if successful.
  */
 bool unload(void);
 
