@@ -19,14 +19,25 @@
 #define HASHSIZE 101
 
 /**
- * Create a new node with word and a null next pointer. Returns the node if successful, else NULL.
+ * Nodes for each word in the dictionary.
  */
-node create(const char* word);
+typedef struct node {
+	char word[LENGTH + 1];
+	struct node* next;
+}
+node;
 
 /**
- * Insert new node at n in the linked list. Returns true if insertion is successful else false.
+ * Create new node with word and a null next pointer. 
+ * Returns pointer to the new node if successful, else NULL.
  */
-bool insert(node word, int position);
+node* create(const char* word);
+
+/**
+ * Insert node pointed to by inserting at sorted position in the linked list beginning with head. 
+ * Returns the pointer to the head of the linked list.
+ */
+node* insert(node* inserting, node* head);
 
 /**
  * Returns true if word is in dictionary else false.

@@ -6,23 +6,16 @@
  *
  * Implements a dictionary's functionality.
  *
- * Relies on dictionary being a list of newline-demarcated unique words.
+ * Relies on dictionary being a list of newline-demarcated unique lower-case words.
  */
 
+#include <stdio.h>
 #include <stdbool.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 #include "dictionary.h"
-
-/**
- * Nodes for each word in the dictionary.
- */
-typedef struct node {
-	char word[LENGTH + 1];
-	struct node* next;
-}
-node;
 
 /**
  * Array for the hashtable.
@@ -101,18 +94,33 @@ unsigned int hash(char* s)
 	
 	for (hashval = 0; *s != '\0'; s++)
 	{
-		hashval = *s + 31 * hashval;
+		hashval = tolower(*s) + 31 * hashval;
 	}
 	return hashval % HASHSIZE;
 }
+
+/**
+ * Converts a string s to lower case.
+ */
+void stolower(char* s)
+{
+	while (*s++ != '\0')
+	{
+		tolower(*s);
+	}
+}
+
 
 /**
  * Returns true if word is in dictionary else false.
  */
 bool check(const char* word)
 {
-    // TODO
-    return false;
+    node* ptr = table[hash(word)];
+	while (ptr != NULL)
+	{
+		if 
+	}
 }
 
 /**
@@ -122,9 +130,9 @@ bool check(const char* word)
 bool load(const char* dictionary)
 {
     // open the dictionary file
-	FILE* dictionary = fopen(dictionary, "r");
+	FILE* dict_file = fopen(dictionary, "r");
 	
-	if (dictionary == NULL)
+	if (dict_file == NULL)
 	{
 		return false;
 	}
@@ -134,7 +142,7 @@ bool load(const char* dictionary)
 	int hashval;
 	
 	// read the file word by word
-	while (fscanf(dictionary, "%s", word) == 1)
+	while (fscanf(dict_file, "%s", word) == 1)
 	{
 		// create a node for new word
 		temp = *create(word);
