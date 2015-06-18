@@ -51,37 +51,22 @@ node* create(const char* word)
 }
 
 /**
- * Insert node pointed to by inserting at sorted position in the linked list beginning with head. 
+ * Insert node pointed to by inserting at the last position in the linked list beginning with head. 
  * Returns the pointer to the head of the linked list.
  */
 node* insert(node* inserting, node* head)
 {
 	node* ptr = head;
-	node* prev = head;
-	
-	if (head == NULL)
+
+	if (ptr == NULL)
 	{
-		head = inserting;
-		return head;
+		return inserting;
 	}
-	
-	while ( ptr != NULL && strcmp(ptr->word, inserting->word) < 0 )
+	while (ptr->next != NULL)
 	{
-		prev = ptr;
 		ptr = ptr->next;
 	}
-	
-	if (ptr == head)
-	{
-		inserting->next = head;
-		head = inserting;
-	}
-	else 
-	{
-		inserting->next = ptr;
-		prev->next = inserting;
-	}
-	
+	ptr->next = inserting;
 	return head;
 }
 
@@ -94,33 +79,53 @@ unsigned int hash(char* s)
 	
 	for (hashval = 0; *s != '\0'; s++)
 	{
-		hashval = tolower(*s) + 31 * hashval;
+		hashval = *s + 31 * hashval;
 	}
 	return hashval % HASHSIZE;
 }
 
 /**
- * Converts a string s to lower case.
+ * Copies a string s to t in lower case.
  */
-void stolower(char* s)
+void stotlower(char* t, const char* s)
 {
-	while (*s++ != '\0')
+	while (*s != '\0')
 	{
-		tolower(*s);
+		*t = tolower(*s);
+		s++;
+		t++;
 	}
+	*t = '\0';
 }
-
 
 /**
  * Returns true if word is in dictionary else false.
  */
 bool check(const char* word)
-{
-    node* ptr = table[hash(word)];
+{	
+	// case insensitive.
+	char checking[LENGTH];
+	stotlower(checking, word);
+	
+	// check the relevant linked list.
+    node* ptr = table[hash(checking)];
+		
 	while (ptr != NULL)
 	{
-		if 
+		if (ptr->word[0] == checking[0])
+		{
+			if (strcmp(ptr->word, checking) == 0)
+			{
+				return true;
+			}
+		}
+		else if (ptr->word[0] > checking[0])
+		{
+			return false;
+		}
+		ptr = ptr->next;
 	}
+	return false;
 }
 
 /**
@@ -129,6 +134,12 @@ bool check(const char* word)
  */
 bool load(const char* dictionary)
 {
+	// set up hash table
+	for (int i = 0; i < HASHSIZE; i++)
+	{
+		table[i] = NULL;
+	}
+	
     // open the dictionary file
 	FILE* dict_file = fopen(dictionary, "r");
 	
@@ -138,20 +149,20 @@ bool load(const char* dictionary)
 	}
 	
 	char word[LENGTH + 1];
-	node temp;
+	node* temp;
 	int hashval;
 	
 	// read the file word by word
 	while (fscanf(dict_file, "%s", word) == 1)
-	{
+	{	
 		// create a node for new word
-		temp = *create(word);
+		temp = create(word);
 		
 		// get the hash value
 		hashval = hash(word);
 		
 		// add that word into the appropriate place in the hashtable
-		table[hashval] = insert(&temp, table[hashval]);
+		table[hashval] = insert(temp, table[hashval]);
 	}
 	return true;
 }

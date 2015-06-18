@@ -16,7 +16,7 @@
 #define LENGTH 45
 
 // size of hash-table array
-#define HASHSIZE 101
+#define HASHSIZE 1001
 
 /**
  * Nodes for each word in the dictionary.
@@ -38,6 +38,11 @@ node* create(const char* word);
  * Returns the pointer to the head of the linked list.
  */
 node* insert(node* inserting, node* head);
+
+/**
+ * Copies a string s to t in lower case.
+ */
+void stotlower(char* t, const char* s);
 
 /**
  * Returns true if word is in dictionary else false.
