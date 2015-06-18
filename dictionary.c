@@ -184,10 +184,22 @@ unsigned int size(void)
 
 /**
  * Unloads dictionary from memory.  
- * Returns true if successful else false.
+ * Returns true if successful.
  */
 bool unload(void)
 {
-    // TODO
-    return false;
+	node* ptr;
+	node* temp;
+	
+    for (int i = 0; i < HASHSIZE; i++)
+	{
+		ptr = table[i];
+		while (ptr != NULL)
+		{
+			temp = ptr;
+			ptr = ptr->next;
+			free(temp);
+		}
+	}
+	return true;
 }
